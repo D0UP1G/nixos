@@ -6,15 +6,15 @@
     home-manager
 
     # Graphical apps
-    chromium
+#    chromium
     librewolf
     telegram-desktop
     obsidian
     bruno
     vscodium
-    steam
-    steam-unwrapped 
-    steam-run 
+#    steam
+#    steam-unwrapped 
+#    steam-run 
     nemo
     opentabletdriver    
     # CLI apps
