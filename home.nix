@@ -28,15 +28,15 @@
     ./home/hypr/waybar.nix
     ./home/gtk.nix
 #    ./home/qt.nix
-    inputs.zen-browser.homeModules.twilight  
+#    inputs.zen-browser.homeModules.twilight  
     inputs.nixvim.homeManagerModules.nixvim
 
 ];
   
-  programs.zen-browser = {
-    enable = true;
-    # any other options under `programs.firefox` are also supported here.
-    # see `man home-configuration.nix`.
-  };
+#  programs.zen-browser = {
+#    enable = true;
+#    # any other options under `programs.firefox` are also supported here.
+#    # see `man home-configuration.nix`.
+#  };
 
 }
