@@ -6,7 +6,7 @@
     "wofi/config".text = ''
       show=drun
       width=400
-      height=400
+      height=850
       always_parse_args=true
       show_all=false
       print_command=true
@@ -34,25 +34,26 @@
           color: @on-primary;
           background-color: @primary;
       }
-
       /* Window */
       window {
           margin: 0px;
           padding: 10px;
           border: 3px solid @on-primary;
           border-radius: 7px;
-          background-color: @background;
-          animation: slideIn 0.5s ease-in-out both;
+          background-color: transparent;
+          animation: slideDown 3s ease-out;
       }
 
       /* Slide In */
       @keyframes slideIn {
           0% {
               opacity: 0;
-          }
-          100% {
-              opacity: 1;
-          }
+              margin-top: -500px;  
+	}
+	  100% {
+	      opacity:1;
+	      margin-top: 0px;
+	}
       }
 
       /* Inner Box */
@@ -67,7 +68,7 @@
       /* Fade In */
       @keyframes fadeIn {
           0% {
-              opacity: 0;
+	              
           }
           100% {
               opacity: 1;

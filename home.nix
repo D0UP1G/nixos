@@ -9,5 +9,6 @@
     ./home/allacritty.nix
     ./home/waybar.nix
     ./home/wofi.nix
-  ];
+    ./home/waybar.nix 
+ ];
 }

@@ -1,364 +1,257 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
+  home.packages = with pkgs; [
+    waybar
+    wofi
+    networkmanager
+    pamixer
+    brightnessctl
+  ];
+
   programs.waybar = {
     enable = true;
-    
-    style = ''
-      * {
-          font-family: "Iosevka Nerd Font";
-          font-weight: bold;
-          font-size: 13px;
-      }
-
-      window#waybar {
-          background-color: transparent;
-      }
-
-      window > box {
-          margin-top: 5px;
-          margin-left: 5px;
-          margin-right: 5px;
-          padding-left: 2px;
-          padding-right: 2px;
-      }
-
-      #window {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 8px 12px 8px 8px;
-          margin: 4px 0;
-      }
-
-      window#waybar.empty #window {
-          background: rgba(12, 12, 12, 0);
-      }
-
-      .modules-left {
-          padding: 3px;
-      }
-
-      .modules-right {
-          padding: 3px;
-      }
-
-      .modules-center {
-          padding: 3px;
-      }
-
-      #workspaces {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 4px 4px 4px 6px;
-          margin: 4px 0;
-      }
-
-      #workspaces button {
-          min-height: 0;
-          padding: 0 7px;
-          margin-right: 2px;
-          color: #f5e0dc;
-      }
-
-      #workspaces button.urgent {
-          color: #f5e0dc;
-          animation-name: blink;
-          animation-duration: 0.5s;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-      }
-
-      #workspaces button.empty {
-          color: #cdd6f4;
-      }
-
-      #workspaces button.visible {
-          color: #89dceb;
-      }
-
-      #workspaces button.active {
-          color: #fab387;
-      }
-
-      @keyframes blink {
-          to {
-              color: #202020;
-              background-color: #dcf5f3;
-          }
-      }
-
-      #custom-launcher {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 8px 8px 8px 4px;
-          margin: 4px 0;
-          color: #89dceb;
-      }
-
-      #custom-power {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 8px 12px 8px 8px;
-          margin: 4px 0;
-      }
-
-      #cpu {
-          background-color: #202020;
-          border-radius: 4px 4px 4px 4px;
-          padding: 8px 8px 8px 20px;
-          margin: 4px 0;
-          color: #f2cdcd;
-      }
-
-      #memory {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 8px 8px 8px 20px;
-          margin: 4px 0;
-          color: #fab387;
-      }
-
-      #wireplumber {
-          background-color: #202020;
-          border-radius: 4px;
-          padding: 8px 8px 8px 20px;
-          margin: 4px 0;
-          color: #f9e2af;
-      }
-
-      #wireplumber.muted {
-          color: #f38ba8;
-      }
-
-      #clock {
-          background-color: #202020;
-          border-radius: 4px 4px 4px 4px;
-          padding: 8px 10px 10px 10px;
-          margin: 4px 0;
-          color: #94e2d5;
-      }
-
-      #network {
-          background-color: #202020;
-          color: #cdd6f4;
-          border-radius: 4px;
-          padding: 8px;
-          margin: 4px 0;
-      }
-
-      #network.disabled {
-          color: #f38ba8;
-      }
-
-      #tray {
-          background-color: #202020;
-          border-radius: 20px;
-          padding: 8px 12px 8px 12px;
-          margin: 4px 0;
-      }
-
-      #battery {
-          background-color: #202020;
-          color: #cdd6f4;
-          border-radius: 4px;
-          padding: 8px;
-          margin: 4px 0;
-      }
-
-      #backlight {
-          background-color: #202020;
-          color: #cdd6f4;
-          border-radius: 4px;
-          padding: 8px;
-          margin: 4px 0;
-      }
-    '';
+    systemd.enable = false;
     
     settings = {
       mainBar = {
         layer = "top";
         position = "top";
-        spacing = 4;
-        
-        modules-left = [
-          "custom/launcher"
-          "hyprland/workspaces"
-          "cpu"
-          "memory"
-        ];
-        
-        modules-center = [
-          "hyprland/window"
-        ];
-        
-        modules-right = [
-          "tray"
-          "network#spd"
-          "wireplumber"
-          "network"
-          "backlight"
-          "clock"
-          "battery"
-          "custom/power"
-        ];
-        
-        backlight = {
-          device = "intel_backlight";
-          format = "{percent}% {icon}";
-          format-icons = ["" ""];
-        };
-        
-        "hyprland/workspaces" = {
-          format = "{name}";
-          "persistent-workspaces" = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
-          };
-        };
-        
-        "hyprland/window" = {
-          icon = false;
-          "separate-outputs" = true;
-          format = "{}";
-        };
-        
-        tray = {
-          "icon-size" = 15;
-          spacing = 7;
-        };
-        
-        clock = {
-          format = "{:%H:%M}  ";
-          "format-alt" = "{:%A, %B %d, %Y (%R)}";
-          "tooltip-format" = "<tt><small>{calendar}</small></tt>";
-          calendar = {
-            mode = "year";
-            "mode-mon-col" = 3;
-            "weeks-pos" = "right";
-            "on-scroll" = 1;
-            "on-click-right" = "mode";
-            format = {
-              months = "<span color='#f5e0dc'><b>{}</b></span>";
-              days = "<span color='#cdd6f4'><b>{}</b></span>";
-              weeks = "<span color='#fab387'><b>W{}</b></span>";
-              weekdays = "<span color='#f5c2e7'><b>{}</b></span>";
-              today = "<span color='#cba6f7'><b><u>{}</u></b></span>";
-            };
-          };
-          actions = {
-            "on-click-right" = "mode";
-            "on-click-forward" = "tz_up";
-            "on-click-backward" = "tz_down";
-            "on-scroll-up" = "shift_up";
-            "on-scroll-down" = "shift_down";
-          };
-        };
-        
-        cpu = {
-          interval = 1;
-          format = "CPU {usage:>2}% {icon0}{icon1}{icon2}{icon3}";
-          "format-icons" = [
-            "▁"
-            "▂"
-            "▃"
-            "▄"
-            "▅"
-            "▆"
-            "▇"
-            "█"
-          ];
-          "on-click" = "${pkgs.alacritty}/bin/alacritty -e ${pkgs.btop}/bin/btop";
-        };
-        
-        memory = {
-          interval = 30;
-          format = "MEM  {used:0.1f}G/{total:0.1f}G";
-        };
-        
-        network = {
-          format = " Disabled";
-          "format-wifi" = " ";
-          "format-ethernet" = "  ";
-          "format-disconnected" = "睊";
-          tooltip = true;
-          "tooltip-format" = "{ifname}\n{ipaddr}";
-          "tooltip-format-wifi" = "{essid} {ifname}\n{ipaddr}\nstrength: {signalStrength}%";
-          "on-click" = "${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu";
-        };
+        height = 40;
+        margin = "0 0 5 0";
+        spacing = 0;
+        modules-left = [ "custom/launcher" "cpu" "memory" ];
+        modules-center = [ "sway/window" ];
+        modules-right = [ "pulseaudio" "backlight" "battery" "network" "clock" ];
+        exclusive = true;
+        passthrough = false;
         
         "custom/launcher" = {
-          format = "   ";
-          tooltip = false;
-          "on-click" = "${pkgs.wofi}/bin/wofi --show drun";
-        };
-        
-        "custom/power" = {
-          format = "  ";
-          "on-click" = "${pkgs.systemd}/bin/poweroff";
+          format = "○";  # Кружок как текст
+          on-click = "${pkgs.wofi}/bin/wofi --show drun";
+          on-click-right = "poweroff";
           tooltip = false;
         };
-        
-        wireplumber = {
-          "scroll-step" = 10;
-          format = "{volume}%";
-          "format-bluetooth" = "{icon}{volume}%";
-          "format-muted" = "muted ";
-          "on-click" = "${pkgs.pavucontrol}/bin/pavucontrol";
-          "format-icons" = {
-            headphones = "";
-            handsfree = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [
-              ""
-              ""
-            ];
+
+        "cpu" = {
+          interval = 2;
+          format = "󰍛 {usage}%";
+          format-alt = "󰍛 {avg_frequency} GHz";
+          tooltip = true;
+          tooltip-format = "Процессор:\n══════════\n• Использование: {usage}%\n• Температура: {temperature}°C\n• Частота: {avg_frequency} GHz\n• Потоки: {num_threads}\n• Ядра: {num_cores}";
+          on-click = "";  # Можно добавить команду для запуска монитора ресурсов
+        };
+
+        "memory" = {
+          interval = 2;
+          format = "󰘚 {percentage}%";
+          format-alt = "󰘚 {used:0.1f}G/{total:0.1f}G";
+          tooltip = true;
+          tooltip-format = "Память:\n════════\n• Использовано: {used:0.1f} GB\n• Всего: {total:0.1f} GB\n• Свободно: {avail:0.1f} GB\n• Использование: {percentage}%\n• Swap: {swapUsed:0.1f}G/{swapTotal:0.1f}G ({swapPercentage}%)";
+          on-click = "";  # Можно добавить команду для запуска монитора ресурсов
+        };
+
+        "sway/window" = {
+          format = "{app_id}";  # Используем title вместо name
+          max-length = 50;
+          format-alt = "-- Без названия --";
+        };
+
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "󰸈";
+          format-icons = {
+            default = ["󰕿" "󰖀" "󰕾"];
           };
+          scroll-step = 5;
+          on-click = "${pkgs.pamixer}/bin/pamixer -t";
         };
-        
-        "network#spd" = {
-          interval = 1;
-          format = "{ifname}";
-          "format-wifi" = "↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}";
-          "format-ethernet" = "↓ {bandwidthDownBytes} ↑ {bandwidthUpBytes}";
+
+        "backlight" = {
+          format = "{icon} {percent}%";
+          format-icons = [ "󰃝" "󰃞" "󰃟" "󰃠" ];
+          on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl set +5%";
+          on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl set 5%-";
         };
-        
-        battery = {
+
+        "battery" = {
           states = {
+            good = 95;
             warning = 30;
-            critical = 15;
+            critical = 20;
           };
-          format = "{capacity}% {icon}";
-          "format-charging" = " {capacity}%";
-          "format-pluged" = " {capacity}%";
-          "format-full" = " {capacity}%";
-          "format-icons" = [
-            ""
-            ""
-            ""
-            ""
-            ""
-            ""
-            ""
-            ""
-            ""
-            ""
-         
+          format = "{icon} {capacity}%";
+          format-charging = "󰂄 {capacity}%";
+          format-plugged = "󰚥 {capacity}%";
+          format-full = "󰁹 {capacity}%";
+          format-icons = [ 
+            "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" 
+            "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"
           ];
+        };
+
+        "network" = {
+          format-wifi = "󰖩 {essid}";
+          format-ethernet = "󰈁 {ifname}";
+          format-disconnected = "󰖪";
+        };
+
+        "clock" = {
+          format = "󰥔 {:%H:%M}";
+          format-alt = "󰃭 {:%d.%m.%Y}";
+          tooltip = true;
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "month";
+            on-scroll = 1;
+            format = {
+              months = "<span color='#1a73e8'><b>{}</b></span>";
+              days = "<span color='#e8eaed'><b>{}</b></span>";
+              weekdays = "<span color='#1a73e8'><b>{}</b></span>";
+              today = "<span color='#ff0000'><b><u>{}</u></b></span>";
+            };
+          };
         };
       };
     };
+
+    style = ''
+      * {
+        font-family: "SF Pro Display", "DejaVu Sans", "Font Awesome 6 Free", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        min-height: 0;
+        border: none;
+        padding: 0px;
+        margin: 0px;
+      }
+      
+      window#waybar {
+        background-color: rgba(32, 33, 36, 1.0);
+        color: #e8eaed;
+        border: none;
+        background-color: transparent;
+        border-radius: 10px 10px 10px 10px;
+        padding: 0px;	
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* Белый круг слева */
+      #custom-launcher {
+        background-color: #1f1f1f;
+        color: white;
+        padding: 6px 12px 6px 16px;
+        min-width: 28px;
+        min-height: 28px;
+        font-size: 16px;
+        font-weight: 900;
+        border-radius: 0px 0px 0px 0px;	
+      }
+      
+      /* Индикатор CPU */
+      #cpu {
+        background-color: #1f1f1f;
+        color: #e8eaed;
+        padding: 0 14px;
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      
+      /* Индикатор памяти */
+      #memory {
+        background-color: #1f1f1f;
+        color: #e8eaed;
+        padding: 0 14px;
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+      	border-radius: 0px 0px 10px 0px;
+	}
+      
+      /* Цветовая индикация для CPU */
+      #cpu.critical {
+        color: #ea4335;
+        animation: blink 1s infinite;
+      }
+      
+      #cpu.warning {
+        color: #fbbc04;
+      }
+      
+      /* Цветовая индикация для памяти */
+      #memory.critical {
+        color: #ea4335;
+        animation: blink 1s infinite;
+      }
+      
+      #memory.warning {
+        color: #fbbc04;
+      }
+      
+      /* Название активного окна в центре */
+      #window {
+        color: #e8eaed;
+        font-weight: normal;
+        padding: 0 20px;
+        background-color: #1f1f1f;
+        border-radius: 0px 0px 10px 10px;
+      }
+      
+      /* Правые модули */
+      #pulseaudio, #backlight, #battery, #network, #clock {
+        color: #e8eaed;
+        padding: 0 14px;
+        background-color: #1f1f1f;
+      }
+      
+      #pulseaudio {
+        border-left: none;		
+        border-radius: 0px 0px 0px 10px;	
+      }
+      
+      /* Часы с календарем */
+      #clock {
+        background-color: rgba(255, 255, 255, 0.03);
+        font-weight: bold;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 0px 0px 0px 0px;
+        background-color: #1f1f1f;
+      }
+      
+      /* Состояния батареи */
+      #battery.warning {
+        color: #fbbc04;
+      }
+      
+      #battery.critical {
+        color: #ea4335;
+      }
+      
+      #battery.charging {
+        color: #34a853;
+      }
+      
+      /* Индикатор сети */
+      #network.disconnected {
+        color: #ea4335;
+      }
+      
+      /* Выключенный звук */
+      #pulseaudio.muted {
+        color: #9aa0a6;
+      }
+      
+      /* Календарь в тултипе */
+      tooltip {
+        background-color: rgba(32, 33, 36, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px;
+      }
+      
+      /* Анимация для критических состояний */
+      @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+      }
+    '';
   };
-  
-  # Установка необходимых пакетов для работы waybar
-  home.packages = with pkgs; [
-    wofi
-    networkmanager_dmenu
-    pavucontrol
-    btop
-  ];
 }

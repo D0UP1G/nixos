@@ -1,4 +1,4 @@
-{
+ак{
 # Make YouTube work in Russia
     services.zapret = {
 	enable = true;

@@ -71,7 +71,7 @@
   services.xserver.enable = true;
 
   # Enable the Cinnamon Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
+  services.displayManager.ly.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
   programs.sway = {
 	enable = true;
@@ -85,6 +85,15 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = with pkgs; [
+  
+  # Или попробуйте общие драйверы Epson
+  epson-escpr2
+  epson-escpr
+  epsonscan2 # Может быть в drivers
+ ];
+  
+  
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -103,7 +112,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.libinput.enable = false;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -115,19 +124,23 @@
     	vscodium
 	obsidian
 	krita
-	neovim
+	
 	telegram-desktop
     	cassette
 	chromium
 	gcc
-	mongosh
+	
 	docker
 	nodejs
+	kdePackages.kdenlive
 	v2raya
+	obs-studio
+	
+	jdk8
+	appimage-run
 	];
   };
-  #mongodb
-  services.mongodb.enable = true;
+  
   
   services.v2raya = {
   enable = true;};
@@ -159,6 +172,9 @@
 	python3
 	go	
 	git
+	epsonscan2
+	cups
+	sane-backends
 ];
 fonts.packages = with pkgs; [
   noto-fonts
@@ -191,7 +207,7 @@ fonts.packages = with pkgs; [
     QT_STYLE_OVERRIDE = "adwaita-dark";
   };
 
-  #Some programs need SUID wrappers, can be configured further or are
+    #Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
@@ -219,3 +235,4 @@ fonts.packages = with pkgs; [
   system.stateVersion = "25.05"; # Did you read the comment?
 
 }
+

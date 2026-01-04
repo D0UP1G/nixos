@@ -4,10 +4,16 @@
 
   programs.nixvim = {
     enable = true;
-    
+    colorschemes.catppuccin.enable = true;
+    # colorschemes.gruvbox.enable = true;
+    # colorschemes.kanagawa.enable = true;
+    # colorschemes.tokyonight.enable = true;
+    # colorschemes.moonfly.enable = true;
+    # colorschemes.tokyonight.enable = true;
+
     globalOpts = {
-      number = true;
-      shiftwidth = 4;
+      relativenumber = true;
+      shiftwidth = 2;
     };
 
     globals.mapleader = " ";
@@ -16,7 +22,6 @@
       lualine.enable = true;
       oil.enable = true;
       web-devicons.enable = true;
-      treesitter.enable = true;
       commentary.enable = true;
       which-key.enable = true;
       trouble.enable = true;
@@ -24,11 +29,18 @@
       /*
       Dependency for otter
       */
-      treesitter.settings.highlight.enable = true;
+      treesitter = {
+        enable = true;
+        settings.highlight.enable = true;
+      };
+      luasnip.enable = true;
+      friendly-snippets.enable = true;
+      ts-autotag.enable = true;
+      # ==============
       autoclose.enable = true;
       instant = {
         enable = true;
-        settings.username = "DOUPIG";
+        settings.username = "SomeSuperCoder";
       };
 
       tiny-inline-diagnostic = {
@@ -67,13 +79,14 @@
           {name = "buffer";}
           {name = "emmet_ls";}
           {name = "tailwindcss";}
+          {name = "luasnip";}
         ];
         settings.mapping = {
           "<C-Space>" = "cmp.mapping.complete()";
           "<C-d>" = "cmp.mapping.scroll_docs(-4)";
           "<C-e>" = "cmp.mapping.close()";
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
-          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<CR>" = "cmp.mapping.confirm({ select = false })";
           "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
           "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
         };
@@ -99,17 +112,26 @@
       lsp = {
         enable = true;
         servers = {
-          nil_ls.enable = true;
+          nixd.enable = true;
           gopls.enable = true;
           pyright.enable = true;
           ts_ls.enable = true;
-          # rust_analyzer = {
-          # enable = true;
-          # installCargo = true;
-          # installRustc = true;
-          # };
+          eslint.enable = true;
+          html.enable = true;
+          cssls.enable = true;
+          bashls.enable = true;
+          dockerls.enable = true;
+          docker_compose_language_service.enable = true;
+          asm_lsp.enable = true;
+          rust_analyzer = {
+            enable = true;
+            installCargo = true;
+            installRustc = true;
+          };
           emmet_ls.enable = true;
           tailwindcss.enable = true;
+          clangd.enable = true;
+          arduino_language_server.enable = true;
         };
         keymaps = {
           silent = true;
@@ -138,7 +160,13 @@
             typescriptreact = ["prettierd"];
             javascript = ["prettierd"];
             javascriptreact = ["prettierd"];
+            html = ["prettierd"];
+            css = ["prettierd"];
             nix = ["alejandra"];
+            c = ["clang-format"];
+            cpp = ["clang-format"];
+            json = ["prettierd"];
+            jsonc = ["prettierd"];
           };
         };
       };
