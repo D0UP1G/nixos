@@ -10,5 +10,7 @@
     ./home/waybar.nix
     ./home/wofi.nix
     ./home/waybar.nix 
+    ./home/dark.nix
+    ./home/neovim.nix
  ];
 }

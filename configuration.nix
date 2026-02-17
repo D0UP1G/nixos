@@ -30,29 +30,7 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  #Driver
-  hardware.graphics.enable = true;
-
-  # Драйверы для Ice Lake
-  hardware.graphics.extraPackages = with pkgs; [
-    intel-media-driver    # Основной драйвер для аппаратного декодирования
-    intel-vaapi-driver    # Резервный драйвер для совместимости
-    intel-compute-runtime # OpenCL и oneAPI
-  ];
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "iHD";  # Предпочтительный драйвер
-  };
-
-  # Параметры ядра для Ice Lake
-  boot.kernelParams = [ 
-    "i915.enable_guc=2"         # Включение GuC/HuC для аппаратного декодирования
-    "i915.enable_fbc=1"         # Сжатие кадрового буфера
-    "i915.enable_psr=1"         # Panel Self Refresh для экономии энергии
-  ];
-
-  # Прошивка
-  hardware.enableRedistributableFirmware = true;
-
+  services.flatpak.enable = true;
     
 
   i18n.extraLocaleSettings = {
@@ -76,6 +54,12 @@
   programs.sway = {
 	enable = true;
 	wrapperFeatures.gtk = true;
+  };
+   programs.hyprland = {
+    # Install the packages from nixpkgs
+    enable = true;
+    # Whether to enable XWayland
+    xwayland.enable = true;
   };
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -121,14 +105,19 @@
     description = "doupig";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-    	vscodium
+    	wine64
+	vscodium
 	obsidian
 	krita
 	
 	telegram-desktop
     	cassette
+	spotify
 	chromium
 	gcc
+
+	mosh
+	browsh
 	
 	docker
 	nodejs
@@ -136,9 +125,18 @@
 	v2raya
 	obs-studio
 	
-	jdk8
+	playerctl
 	appimage-run
-	];
+	flatpak
+	blockbench
+	aseprite
+	jetbrains.idea-community
+	
+	lm_sensors
+	btop
+	ollama
+	p7zip
+];
   };
   
   
